@@ -3,10 +3,15 @@ import EthGenerator from "@/components/EthGenerator";
 import BatchGenerator from "@/components/BatchGenerator";
 import EducationalInfo from "@/components/EducationalInfo";
 import { Gem } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-background text-foreground flex flex-col items-center p-4 sm:p-6 md:p-8 transition-colors duration-300 overflow-x-hidden">
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
+
       <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/10 via-background to-background z-0"></div>
       <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-accent/20 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
       <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-primary/20 rounded-full filter blur-3xl opacity-30 animate-pulse delay-2000"></div>
