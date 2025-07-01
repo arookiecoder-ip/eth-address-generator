@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Copy, List, Loader2 } from "lucide-react";
+import { Copy, KeyRound, List, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
@@ -53,28 +53,6 @@ export default function BatchGenerator() {
     }, 500); // Simulate processing time
   };
 
-  const copyAddresses = () => {
-    if (keyPairs.length === 0) return;
-    const addresses = keyPairs.map(p => p.address).join("\n");
-    navigator.clipboard.writeText(addresses).then(() => {
-      toast({
-        title: "Copied Addresses!",
-        description: "All generated public addresses have been copied to your clipboard.",
-      });
-    });
-  };
-
-  const copyPrivateKeys = () => {
-    if (keyPairs.length === 0) return;
-    const privateKeys = keyPairs.map(p => p.privateKey).join("\n");
-    navigator.clipboard.writeText(privateKeys).then(() => {
-      toast({
-        title: "Copied Private Keys!",
-        description: "All generated private keys have been copied to your clipboard.",
-      });
-    });
-  };
-
   return (
     <Card className="w-full shadow-lg">
       <CardHeader>
@@ -112,18 +90,8 @@ export default function BatchGenerator() {
 
       { (isLoading || keyPairs.length > 0) &&
         <CardFooter className="flex flex-col items-start gap-4">
-            <div className="w-full flex justify-between items-center">
+            <div className="w-full">
                 <h3 className="font-semibold text-lg">Generated Key Pairs</h3>
-                <div className="flex gap-2">
-                    <Button variant="outline" onClick={copyAddresses} disabled={keyPairs.length === 0}>
-                        <Copy className="mr-2 h-4 w-4" />
-                        Copy Addresses
-                    </Button>
-                    <Button variant="outline" onClick={copyPrivateKeys} disabled={keyPairs.length === 0}>
-                        <Copy className="mr-2 h-4 w-4" />
-                        Copy Private Keys
-                    </Button>
-                </div>
             </div>
             <ScrollArea className="h-72 w-full rounded-md border">
             <Table>
@@ -132,7 +100,7 @@ export default function BatchGenerator() {
                     <TableHead className="w-[50px]">#</TableHead>
                     <TableHead>Public Address</TableHead>
                     <TableHead>Private Key</TableHead>
-                    <TableHead className="text-right">Copy</TableHead>
+                    <TableHead className="text-right w-[120px]">Actions</TableHead>
                 </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -154,16 +122,30 @@ export default function BatchGenerator() {
                         <TableCell className="font-code text-sm truncate max-w-[200px]">{pair.address}</TableCell>
                         <TableCell className="font-code text-sm truncate max-w-[200px] text-destructive/80">{pair.privateKey}</TableCell>
                         <TableCell className="text-right">
-                            <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                                navigator.clipboard.writeText(`${pair.address},${pair.privateKey}`);
-                                toast({ title: "Copied row" });
-                            }}
-                            >
-                            <Copy className="h-4 w-4" />
-                            </Button>
+                            <div className="flex items-center justify-end gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  title="Copy Address"
+                                  onClick={() => {
+                                      navigator.clipboard.writeText(pair.address);
+                                      toast({ title: "Copied!", description: "Address copied to clipboard." });
+                                  }}
+                                >
+                                  <Copy className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  title="Copy Private Key"
+                                  onClick={() => {
+                                      navigator.clipboard.writeText(pair.privateKey);
+                                      toast({ title: "Copied!", description: "Private key copied to clipboard." });
+                                  }}
+                                >
+                                  <KeyRound className="h-4 w-4" />
+                                </Button>
+                            </div>
                         </TableCell>
                         </TableRow>
                     ))
