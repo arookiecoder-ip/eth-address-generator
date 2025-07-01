@@ -28,6 +28,7 @@ export default function EthGenerator() {
 
   const generateRandom = () => {
     setIsLoading(true);
+    setInputPrivateKey(""); // Clear derivation input
     setTimeout(() => {
       const wallet = ethers.Wallet.createRandom();
       setPrivateKey(wallet.privateKey);
@@ -94,43 +95,39 @@ export default function EthGenerator() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="p-4 rounded-lg bg-secondary/50 border border-primary/20">
-          <h3 className="font-semibold mb-2">Generate a new random wallet</h3>
-          <p className="text-sm text-muted-foreground mb-4">Click the button to securely generate a new key pair on your device.</p>
-          <Button onClick={generateRandom} disabled={isLoading}>
-            <Shuffle className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            {isLoading ? "Generating..." : "Generate Random Address"}
-          </Button>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            <div className="p-4 rounded-lg bg-secondary/50 border border-primary/20 flex flex-col h-full">
+                <h3 className="font-semibold mb-2">Generate a new random wallet</h3>
+                <p className="text-sm text-muted-foreground mb-4 flex-grow">Click the button to securely generate a new key pair on your device.</p>
+                <Button onClick={generateRandom} disabled={isLoading}>
+                    <Shuffle className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+                    {isLoading ? "Generating..." : "Generate Random Address"}
+                </Button>
+            </div>
 
-        <div className="relative">
-          <Separator />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="bg-card px-2 text-muted-foreground text-sm">OR</span>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-lg bg-secondary/50 border border-primary/20">
-          <h3 className="font-semibold mb-2">Derive from private key</h3>
-          <p className="text-sm text-muted-foreground mb-4">Paste your private key below to derive the corresponding public address.</p>
-          <div className="space-y-2">
-             <Label htmlFor="input-pk">Your Private Key</Label>
-             <div className="flex items-center gap-2">
-                <KeyRound className="h-5 w-5 text-muted-foreground" />
-                <Input
-                    id="input-pk"
-                    placeholder="Enter a 64-character hex private key"
-                    value={inputPrivateKey}
-                    onChange={deriveFromPrivateKey}
-                    className="font-code"
-                />
-             </div>
-          </div>
+            <div className="p-4 rounded-lg bg-secondary/50 border border-primary/20 flex flex-col h-full">
+                <h3 className="font-semibold mb-2">Derive from private key</h3>
+                <p className="text-sm text-muted-foreground mb-4 flex-grow">Paste your private key below to derive the corresponding public address.</p>
+                <div className="space-y-2">
+                    <Label htmlFor="input-pk">Your Private Key</Label>
+                    <div className="flex items-center gap-2">
+                        <KeyRound className="h-5 w-5 text-muted-foreground" />
+                        <Input
+                            id="input-pk"
+                            placeholder="Enter a 64-character hex private key"
+                            value={inputPrivateKey}
+                            onChange={deriveFromPrivateKey}
+                            className="font-code"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
         
         <Separator />
 
-        <div className="space-y-4 pt-4">
+        <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-center">Results</h3>
             <KeyDisplay label="Public Address" value={address} />
             <KeyDisplay label="Private Key" value={privateKey} isPrivate />
         </div>
