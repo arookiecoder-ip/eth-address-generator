@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-background text-foreground flex flex-col items-center p-4 sm:p-6 md:p-8 transition-colors duration-300 overflow-x-hidden">
+    <div className="relative min-h-screen bg-background text-foreground flex flex-col items-center p-4 sm:p-6 md:p-8 transition-colors duration-300 overflow-hidden">
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />
       </div>
