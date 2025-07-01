@@ -7,14 +7,12 @@ import * as z from "zod";
 import { ethers } from "ethers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, Copy, List, Loader2 } from "lucide-react";
+import { Copy, List, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 const batchFormSchema = z.object({
   count: z.coerce.number().int().min(1, "Must be at least 1").max(100, "Cannot generate more than 100 at a time."),
@@ -55,14 +53,24 @@ export default function BatchGenerator() {
     }, 500); // Simulate processing time
   };
 
-  const copyAsCsv = () => {
+  const copyAddresses = () => {
     if (keyPairs.length === 0) return;
-    const header = "address,private_key\n";
-    const csvContent = keyPairs.map(p => `${p.address},${p.privateKey}`).join("\n");
-    navigator.clipboard.writeText(header + csvContent).then(() => {
+    const addresses = keyPairs.map(p => p.address).join("\n");
+    navigator.clipboard.writeText(addresses).then(() => {
       toast({
-        title: "Copied as CSV!",
-        description: "All generated key pairs have been copied to your clipboard.",
+        title: "Copied Addresses!",
+        description: "All generated public addresses have been copied to your clipboard.",
+      });
+    });
+  };
+
+  const copyPrivateKeys = () => {
+    if (keyPairs.length === 0) return;
+    const privateKeys = keyPairs.map(p => p.privateKey).join("\n");
+    navigator.clipboard.writeText(privateKeys).then(() => {
+      toast({
+        title: "Copied Private Keys!",
+        description: "All generated private keys have been copied to your clipboard.",
       });
     });
   };
@@ -106,10 +114,16 @@ export default function BatchGenerator() {
         <CardFooter className="flex flex-col items-start gap-4">
             <div className="w-full flex justify-between items-center">
                 <h3 className="font-semibold text-lg">Generated Key Pairs</h3>
-                <Button variant="outline" onClick={copyAsCsv} disabled={keyPairs.length === 0}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Copy as CSV
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" onClick={copyAddresses} disabled={keyPairs.length === 0}>
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copy Addresses
+                    </Button>
+                    <Button variant="outline" onClick={copyPrivateKeys} disabled={keyPairs.length === 0}>
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copy Private Keys
+                    </Button>
+                </div>
             </div>
             <ScrollArea className="h-72 w-full rounded-md border">
             <Table>
