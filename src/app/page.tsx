@@ -44,7 +44,7 @@ export default function Home() {
         
         <EducationalInfo />
       </main>
-      <footer className="w-full max-w-5xl mx-auto pt-8 mt-12 border-t border-primary/10 text-center text-muted-foreground text-sm z-10">
+      <footer className="w-full max-w-5xl mx-auto mt-auto py-6 border-t border-primary/10 text-center text-muted-foreground text-sm z-10">
         <p>
           Created by <a href="https://github.com/arookiecoder-ip" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">arookiecoder</a>.
         </p>
