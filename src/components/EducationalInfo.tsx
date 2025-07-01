@@ -1,56 +1,72 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, ShieldAlert, ShieldQuestion } from "lucide-react";
+
+const InfoItem = ({ icon, trigger, children }: { icon: React.ReactNode, trigger: string, children: React.ReactNode }) => (
+    <AccordionItem value={trigger} className="border-b-0">
+        <AccordionTrigger className="text-base sm:text-lg hover:no-underline font-semibold rounded-lg px-4 py-3 hover:bg-primary/10 transition-colors [&[data-state=open]]:bg-primary/10">
+            <div className="flex items-center gap-3">
+                {icon}
+                <span>{trigger}</span>
+            </div>
+        </AccordionTrigger>
+        <AccordionContent className="space-y-3 text-base leading-relaxed text-muted-foreground pt-4 pb-2 px-4">
+            {children}
+        </AccordionContent>
+    </AccordionItem>
+);
 
 export default function EducationalInfo() {
   return (
     <section className="w-full">
-      <h2 className="text-2xl font-headline font-bold text-center mb-6 flex items-center justify-center gap-2">
-        <ShieldCheck className="w-7 h-7 text-primary" />
+      <h2 className="text-3xl font-headline font-bold text-center mb-8 flex items-center justify-center gap-3">
+        <ShieldCheck className="w-8 h-8 text-primary" />
         Security Best Practices
       </h2>
-      <Accordion type="single" collapsible className="w-full bg-card p-4 rounded-lg shadow-md border">
-        <AccordionItem value="item-1">
-          <AccordionTrigger>What is a Private Key?</AccordionTrigger>
-          <AccordionContent className="space-y-2 text-base">
-            <p>
-              An Ethereum private key is a secret 64-character hexadecimal string that gives you ownership and control over your cryptocurrency wallet and any funds within it. It's like the master password to your bank account.
-            </p>
-            <p className="font-semibold text-destructive">
-              Never share your private key with anyone. Anyone who has it can access your funds.
-            </p>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger>How to Store Your Keys Securely</AccordionTrigger>
-          <AccordionContent className="space-y-4 text-base">
-            <div>
-              <h4 className="font-semibold">Hardware Wallets (Most Secure)</h4>
-              <p>Devices like Ledger or Trezor store your private keys offline, making them immune to online hacking attempts. This is the recommended method for storing significant amounts of crypto.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold">Paper Wallets (Good for long-term storage)</h4>
-              <p>This involves writing or printing your private key on a piece of paper and storing it in a safe, secure location (like a fireproof safe or safe deposit box). Make multiple copies.</p>
-            </div>
-            <div>
-                <h4 className="font-semibold text-destructive">Software Wallets (Less Secure)</h4>
-                <p>Desktop or mobile wallets are convenient but are connected to the internet, making them vulnerable. Only use trusted, well-reviewed software and store small amounts for daily use.</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-3">
-          <AccordionTrigger>Dangers of Online Generators &amp; Phishing</AccordionTrigger>
-          <AccordionContent className="space-y-4 text-base">
-            <p>
-              While this tool generates keys securely in your browser (they are never sent over the internet), you should be cautious with online crypto tools.
-            </p>
-            <ul className="list-disc pl-5 space-y-2">
-                <li><strong className="font-semibold">Malicious Generators:</strong> Some websites might save the private keys they generate for you, intending to steal your funds later. Always use open-source and reputable tools.</li>
-                <li><strong className="font-semibold">Phishing Scams:</strong> Be wary of emails, messages, or websites asking for your private key or seed phrase. Legitimate services will NEVER ask for this information.</li>
-                <li><strong className="font-semibold">Clipboard Hijacking:</strong> Some malware can change the crypto address you've copied, replacing it with an attacker's address. Always double-check the address after pasting before sending a transaction.</li>
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <div className="w-full bg-card/80 backdrop-blur-lg border border-primary/10 rounded-xl shadow-xl shadow-primary/5 p-2 sm:p-4">
+        <Accordion type="single" collapsible className="w-full">
+            <InfoItem 
+                icon={<ShieldQuestion className="w-6 h-6 text-accent" />} 
+                trigger="What is a Private Key?"
+            >
+                <p>
+                An Ethereum private key is a secret 64-character hexadecimal string that gives you ownership and control over your wallet and any funds within it. It's the master key to your digital vault.
+                </p>
+                <p className="font-semibold text-destructive/80">
+                Never share your private key. Anyone who has it can access and steal your assets.
+                </p>
+            </InfoItem>
+            <InfoItem 
+                icon={<ShieldCheck className="w-6 h-6 text-green-500" />} 
+                trigger="How to Store Your Keys Securely"
+            >
+                 <div>
+                    <h4 className="font-semibold text-foreground">Hardware Wallets (Most Secure)</h4>
+                    <p>Devices like Ledger or Trezor store your private keys offline, making them immune to online hacking. This is the gold standard for storing significant value.</p>
+                </div>
+                <div>
+                    <h4 className="font-semibold text-foreground">Paper Wallets (Offline Storage)</h4>
+                    <p>This involves printing your key on paper and storing it in a safe, secure physical location. Good for long-term "cold storage," but be mindful of physical damage or loss.</p>
+                </div>
+                <div>
+                    <h4 className="font-semibold text-foreground">Software Wallets (Convenient, Use with Caution)</h4>
+                    <p>Desktop or mobile wallets are connected to the internet, making them inherently more vulnerable. Use trusted, well-reviewed software and only for small, "spending" amounts.</p>
+                </div>
+            </InfoItem>
+            <InfoItem 
+                icon={<ShieldAlert className="w-6 h-6 text-amber-500" />} 
+                trigger="Dangers of Online Generators & Phishing"
+            >
+                <p>
+                While this tool generates keys securely in your browser (they are never sent over the internet), you must be vigilant in the crypto space.
+                </p>
+                <ul className="list-disc pl-5 space-y-2 mt-2">
+                    <li><strong>Malicious Generators:</strong> Some websites might secretly save the private keys they generate, intending to steal funds later. Always use open-source and reputable tools.</li>
+                    <li><strong>Phishing Scams:</strong> Be wary of any email, message, or site asking for your private key or seed phrase. Legitimate services will <strong className="uppercase">never</strong> ask for this.</li>
+                    <li><strong>Clipboard Hijacking:</strong> Malware can change the crypto address you've copied, replacing it with an attacker's address. Always double-check the address after pasting before sending a transaction.</li>
+                </ul>
+            </InfoItem>
+        </Accordion>
+      </div>
     </section>
   );
 }
