@@ -45,7 +45,9 @@ export default function Home() {
         <EducationalInfo />
       </main>
       <footer className="w-full max-w-5xl mx-auto pt-8 mt-12 border-t border-primary/10 text-center text-muted-foreground text-sm z-10">
-        <p>&copy; {new Date().getFullYear()} EthAddressGen. All rights reserved.</p>
+        <p>
+          Created by <a href="https://github.com/arookiecoder-ip" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">arookiecoder</a>.
+        </p>
         <p className="mt-1">This is an open-source tool. Always audit code before use with real funds.</p>
       </footer>
     </div>
